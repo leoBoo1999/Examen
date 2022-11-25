@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">com.bignerdranch.android.geoquiz</string>
+    <string name="check">Check</string>
+    <string name="correct">Correcto!</string>
+    <string name="incorrect">Incorrecto!</string>
+    <string name="mensaje">Digite un número</string>
+    <string name="digit">Digite</string>
+</resources>
