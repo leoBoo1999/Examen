@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import kotlin.random.Random
 
 import com.example.combignerdranchandroidgeoquiz.databinding.ActivityMainBinding
@@ -15,12 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val quizViewModel: QuizViewModel by viewModels()
 
-
-    private var resultFinal: Int = 0
-    private var operationF : String = ""
-    private var operationDo : String = ""
-    private var number3: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +26,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d(TAG, "Got a QuizViewModel: $quizViewModel")
 
-        update()
+
+        update2()
+
+
         binding.check.setOnClickListener{
             checkAnswer()
         }
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onDestroy() called")
     }
 
-    private fun update() {
+    /*private fun update() {
 
         binding.edit.text.clear()
         val listOperations = listOf("+",'-','*')
@@ -83,6 +84,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.textview.text = operationF
 
+    }*/
+
+    private fun update2(){
+        binding.edit.text.clear() /// Se limpia la pantalla
+        binding.textview.text = quizViewModel.operationF
     }
 
 
@@ -92,14 +98,14 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,R.string.mensaje, Toast.LENGTH_LONG).show()
         return}
 
-        val res= if(binding.edit.text.toString()== resultFinal.toString()){
+        val res= if(binding.edit.text.toString()== quizViewModel.resultFinal.toString()){
             R.string.correct
 
         }else{
             R.string.incorrect
 
         }
-        val colorBackground= if(binding.edit.text.toString()== resultFinal.toString()){
+        val colorBackground= if(binding.edit.text.toString()== quizViewModel.resultFinal.toString()){
             R.color.green
         }else{
             R.color.red
@@ -109,8 +115,11 @@ class MainActivity : AppCompatActivity() {
         mySnack.setBackgroundTint(getColor(colorBackground))
         mySnack.show()
 
-        if(binding.edit.text.toString()== resultFinal.toString()){
-            update()
+        if(binding.edit.text.toString()== quizViewModel.resultFinal.toString()){
+            binding.edit.text.clear() /// Se limpia la pantalla
+            quizViewModel.moveToNext()
+            binding.textview.text = quizViewModel.operationF
+
 
 
         }
